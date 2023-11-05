@@ -118,7 +118,7 @@ document.addEventListener('keydown', event => {
 })
 
 let touchStartX, touchStartY;
-const touchThreshold = 30;
+const touchThreshold = 5;
 
 canvas.addEventListener('click', (e) => {
   movement.rotate(game)
