@@ -119,6 +119,11 @@ document.addEventListener('keydown', event => {
 
 let touchStartX, touchStartY;
 
+canvas.addEventListener('click', (e) => {
+  movement.rotate(game)
+})
+
+
 canvas.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
@@ -133,12 +138,12 @@ canvas.addEventListener('touchmove', (e) => {
 
     // You can adjust these threshold values for smoother movement
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 0)
+        if (deltaX > 100)
           movement.moveRight(game) // Swipe right
         else
           movement.moveLeft(game) // Swipe left        
     } else {
-        if (deltaY > 0) {
+        if (deltaY > 100) {
             // Swipe down
             game.score++
             movement.moveDown(game)
