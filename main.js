@@ -117,6 +117,38 @@ document.addEventListener('keydown', event => {
   if (event.key === 'ArrowUp') movement.rotate(game)
 })
 
+let touchStartX, touchStartY;
+
+canvas.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+});
+
+canvas.addEventListener('touchmove', (e) => {
+    const touchEndX = e.touches[0].clientX;
+    const touchEndY = e.touches[0].clientY;
+
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+
+    // You can adjust these threshold values for smoother movement
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0)
+          movement.moveRight(game) // Swipe right
+        else
+          movement.moveLeft(game) // Swipe left        
+    } else {
+        if (deltaY > 0) {
+            // Swipe down
+            game.score++
+            movement.moveDown(game)
+        }
+    }
+
+    touchStartX = touchEndX;
+    touchStartY = touchEndY;
+});
+
 update()
 
 
