@@ -138,12 +138,12 @@ canvas.addEventListener('touchmove', (e) => {
 
     // You can adjust these threshold values for smoother movement
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 100)
+        if (deltaX > 10)
           movement.moveRight(game) // Swipe right
         else
           movement.moveLeft(game) // Swipe left        
     } else {
-        if (deltaY > 100) {
+        if (deltaY > 10) {
             // Swipe down
             game.score++
             movement.moveDown(game)
