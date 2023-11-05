@@ -117,14 +117,14 @@ document.addEventListener('keydown', event => {
   if (event.key === 'ArrowUp') movement.rotate(game)
 })
 
-let touchStartX, touchStartY;
-const horizontalTouchThreshold = 10;
-const verticalTouchThreshold = 15;
+const horizontalTouchThreshold = 2
+const verticalTouchThreshold = 4
+
+let touchStartX, touchStartY
 
 canvas.addEventListener('click', (e) => {
   movement.rotate(game)
 })
-
 
 canvas.addEventListener('touchstart', (e) => {
   touchStartX = e.touches[0].clientX;
