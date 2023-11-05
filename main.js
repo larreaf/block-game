@@ -55,56 +55,56 @@ function draw() {
   document.querySelector("#score").innerText = game.score
 }
 
-function drawBackground(canvasContext, board) {
-  canvasContext.fillStyle = '#000'
-
-  // canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-  board.forEach((row, y) => {
-    row.forEach((color, x) => {
-      if (color === 0) {
-        canvasContext.fillStyle = 'black'
-        canvasContext.lineWidth = 0.1
-        canvasContext.strokeStyle = 'black'
-        canvasContext.strokeRect(x, y, 0.8, 0.8)
-        canvasContext.fillRect(x, y, 0.8, 0.8)
-      }
-    })
+function iterateMatrix(matrix, callback) {
+  matrix.forEach((row, y) => {
+    row.forEach((value, x) => callback(x, y, value))
   })
+}
+
+const paintBackground = (canvasContext) => (x, y, color) => {
+  if (color === 0) {
+    canvasContext.fillStyle = 'black'
+    canvasContext.lineWidth = 0.1
+    canvasContext.strokeStyle = 'black'
+    canvasContext.strokeRect(x, y, 0.8, 0.8)
+    canvasContext.fillRect(x, y, 0.8, 0.8)
+  }
+}
+
+const paintSolidPieces = (canvasContext) => (x, y, color) => {
+  if (color !== 0) {
+    canvasContext.fillStyle = colors[color]
+    canvasContext.lineWidth = 0.1
+    canvasContext.strokeStyle = 'white'
+    canvasContext.strokeRect(x, y, 0.8, 0.8)
+    canvasContext.fillRect(x, y, 0.8, 0.8)
+  }
+}
+
+const paintPlayerPiece = (canvasContext, playerPositionX, playerPositionY) => (x, y, color) => {
+  if (color !== 0) {
+    let positionX = x + playerPositionX
+    let positionY = y + playerPositionY
+    canvasContext.fillStyle = colors[color]
+    canvasContext.lineWidth = 0.1
+    canvasContext.strokeStyle = 'grey'
+    canvasContext.strokeRect(positionX, positionY, 0.8, 0.8)
+    canvasContext.fillRect(positionX, positionY, 0.8, 0.8)
+  }
+}
+
+function drawBackground(canvasContext, board) {
+  iterateMatrix(board, paintBackground(canvasContext))
 }
 
 function drawSolidpieces(canvasContext, board) {
-  board.forEach((row, y) => {
-    row.forEach((color, x) => {
-      if (color !== 0) {
-        canvasContext.fillStyle = colors[color]
-        canvasContext.lineWidth = 0.1
-        canvasContext.strokeStyle = 'white'
-        canvasContext.strokeRect(x, y, 0.8, 0.8)
-        canvasContext.fillRect(x, y, 0.8, 0.8)
-      }
-    })
-  })
-}
-// Pieza player
-const playerPiece = {
-  position: { x: PLAYER_START_X, y: PLAYER_START_Y },
-  shape: pieceRandomizer()
+  iterateMatrix(board, paintSolidPieces(canvasContext))
 }
 
 function drawPlayerpiece(canvasContext, playerPiece) {
-  playerPiece.shape.forEach((row, y) => {
-    row.forEach((color, x) => {
-      if (color !== 0) {
-        let positionX = x + playerPiece.position.x
-        let positionY = y + playerPiece.position.y
-        canvasContext.fillStyle = colors[color]
-        canvasContext.lineWidth = 0.1
-        canvasContext.strokeStyle = 'grey'
-        canvasContext.strokeRect(positionX, positionY, 0.8, 0.8)
-        canvasContext.fillRect(positionX, positionY, 0.8, 0.8)
-      }
-    })
-  })
+  const paintCallback = paintPlayerPiece(canvasContext, playerPiece.position.x, playerPiece.position.y)
+
+  iterateMatrix(playerPiece.shape, paintCallback)  
 }
 
 document.addEventListener('keydown', event => {
