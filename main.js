@@ -104,7 +104,7 @@ function drawSolidpieces(canvasContext, board) {
 function drawPlayerpiece(canvasContext, playerPiece) {
   const paintCallback = paintPlayerPiece(canvasContext, playerPiece.position.x, playerPiece.position.y)
 
-  iterateMatrix(playerPiece.shape, paintCallback)  
+  iterateMatrix(playerPiece.shape, paintCallback)
 }
 
 document.addEventListener('keydown', event => {
@@ -118,6 +118,7 @@ document.addEventListener('keydown', event => {
 })
 
 let touchStartX, touchStartY;
+const touchThreshold = 30;
 
 canvas.addEventListener('click', (e) => {
   movement.rotate(game)
@@ -125,33 +126,33 @@ canvas.addEventListener('click', (e) => {
 
 
 canvas.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
 });
 
 canvas.addEventListener('touchmove', (e) => {
-    const touchEndX = e.touches[0].clientX;
-    const touchEndY = e.touches[0].clientY;
+  const touchEndX = e.touches[0].clientX;
+  const touchEndY = e.touches[0].clientY;
 
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
+  const deltaX = touchEndX - touchStartX;
+  const deltaY = touchEndY - touchStartY;
 
-    // You can adjust these threshold values for smoother movement
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 10)
-          movement.moveRight(game) // Swipe right
-        else
-          movement.moveLeft(game) // Swipe left        
-    } else {
-        if (deltaY > 10) {
-            // Swipe down
-            game.score++
-            movement.moveDown(game)
-        }
-    }
+  // You can adjust these threshold values for smoother movement
+  if (Math.abs(deltaX) > touchThreshold) {
+    if (deltaX > 0)
+      movement.moveRight(game) // Swipe right
+    else
+      movement.moveLeft(game) // Swipe left        
+  }
+  if (Math.abs(deltaX) > touchThreshold &&
+    deltaY > 0) {
+    // Swipe down
+    game.score++
+    movement.moveDown(game)
+  }
 
-    touchStartX = touchEndX;
-    touchStartY = touchEndY;
+  touchStartX = touchEndX;
+  touchStartY = touchEndY;
 });
 
 update()
