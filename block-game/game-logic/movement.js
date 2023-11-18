@@ -1,25 +1,41 @@
 import collisionChecker from './collisionChecker'
 import bf from './boardFunctions'
+import { rotateMatrix } from './arrayFunctions'
+
+const pieceCanBeRotated = (board, rotatedPiece) => {
+
+    var colission = collisionChecker.checkHorizontalcollision(board, rotatedPiece)
+
+    if (colission !== null) {
+        rotatedPiece.position.x -= rotatedPiece.shape[0].length - colission
+
+        var checkColissionAgain = collisionChecker.checkHorizontalcollision(board, rotatedPiece)
+
+        return checkColissionAgain === null
+    }
+
+    return true
+}
 
 const movement = {
     moveLeft: (game) => {
         game.playerPiece.position.x--
-        if (collisionChecker.checkHorizontalcollision(game.board, game.playerPiece))
+        if (collisionChecker.checkHorizontalcollision(game.board, game.playerPiece) !== null)
             game.playerPiece.position.x++
     },
     moveRight: (game) => {
         game.playerPiece.position.x++
-        if (collisionChecker.checkHorizontalcollision(game.board, game.playerPiece))
+        if (collisionChecker.checkHorizontalcollision(game.board, game.playerPiece) !== null)
             game.playerPiece.position.x--
     },
     moveDown: (game) => {
-        game.playerPiece.position.y++        
+        game.playerPiece.position.y++
         if (collisionChecker.checkVerticalcollision(game.board, game.playerPiece)) {
             game.playerPiece.position.y--
             bf.solidify(game)
             bf.removeRows(game)
-            game.playerPiece = bf.spawnShape()            
-            if(collisionChecker.checkVerticalcollision(game.board, game.playerPiece)) {
+            game.playerPiece = bf.spawnShape()
+            if (collisionChecker.checkVerticalcollision(game.board, game.playerPiece)) {
                 game.board.forEach((row) => row.fill(0))
                 game.score = 0
             }
@@ -28,26 +44,18 @@ const movement = {
     rotate: (game) => {
         const currentPlayerShape = game.playerPiece.shape
 
-        const height = currentPlayerShape.length;
-        const width = currentPlayerShape.reduce((max, row) => Math.max(max, row.length), 0);
+        const playerPiecePositionX = game.playerPiece.position.x
+        const playerPiecePositionY = game.playerPiece.position.y
 
-        // Create a new array with the transposed dimensions
-        const rotatedpiece = new Array(width);
-        
-        for (let i = 0; i < width; i++) {
-            rotatedpiece[i] = new Array(height);
+        const rotatedShape = rotateMatrix(currentPlayerShape)
+
+        let rotatedPiece = {
+            position: { x: playerPiecePositionX, y: playerPiecePositionY },
+            shape: rotatedShape
         }
 
-        // Copy values from the original array to the rotated array
-        for (let i = 0; i < height; i++) {
-            for (let j = 0; j < currentPlayerShape[i].length; j++) {
-                rotatedpiece[j][height - 1 - i] = currentPlayerShape[i][j];
-            }
-        }
-
-        
-        
-        game.playerPiece.shape = rotatedpiece
+        if (pieceCanBeRotated(game.board, rotatedPiece))
+            game.playerPiece = rotatedPiece
     }
 }
 

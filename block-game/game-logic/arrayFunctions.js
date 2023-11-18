@@ -33,6 +33,28 @@ export function unshiftNewRows(array, rows, size, fillWidth = 0) {
 
 export function iterateMatrix(matrix, callback) {
     matrix.forEach((row, y) => {
-      row.forEach((value, x) => callback(x, y, value))
+        row.forEach((value, x) => callback(x, y, value))
     })
-  }
+}
+
+export function rotateMatrix(matrix) {
+
+    const height = matrix.length;
+    const width = matrix.reduce((max, row) => Math.max(max, row.length), 0);
+
+    // Create a new array with the transposed dimensions
+    const rotatedMatrix = new Array(width);
+
+    for (let i = 0; i < width; i++) {
+        rotatedMatrix[i] = new Array(height);
+    }
+
+    // Copy values from the original array to the rotated array
+    for (let i = 0; i < height; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+            rotatedMatrix[j][height - 1 - i] = matrix[i][j];
+        }
+    }
+
+    return rotatedMatrix;
+}

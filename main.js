@@ -13,31 +13,40 @@ canvas.height = BLOCK_SIZE * BOARD_HEIGHT
 
 canvasContext.scale(BLOCK_SIZE, BLOCK_SIZE)
 
-
+let dropSpeed = 1500
+const dropSpeedMinLimit = 100
 let dropCounter = 0
 let lastTime = 0
 
-function autoDrop(time = 0) {
+function increaseSpeed(game){
+  if(dropSpeed > dropSpeedMinLimit){
+    
+  }
+}
+
+function autoDrop(game, time = 0) {
+
+  increaseSpeed(game)
+
   const deltaTime = time - lastTime
 
   lastTime = time
   dropCounter += deltaTime
 
-
-  if (dropCounter > 1000) {
+  if (dropCounter > dropSpeed) {
     movement.moveDown(game)
     dropCounter = 0
   }
 }
 
 // game loop
-function update(time = 0) {
-  autoDrop(time)
-  draw(canvasContext)
-  window.requestAnimationFrame(update)
+const update = (game) => (time = 0) => {
+  autoDrop(game, time)
+  draw(canvasContext, game)
+  window.requestAnimationFrame(update(game))
 }
 
-function draw(canvasContext) {
+function draw(canvasContext, game) {
   drawBackground(canvasContext, game.board)
   drawSolidpieces(canvasContext, game.board)
   drawPlayerpiece(canvasContext, game.playerPiece)
@@ -46,7 +55,7 @@ function draw(canvasContext) {
 
 bindKeys()
 
-update()
+update(game)()
 
 
 
