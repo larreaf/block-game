@@ -45,6 +45,8 @@ const movement = {
             }
         }
 
+        
+        
         game.playerPiece.shape = rotatedpiece
     }
 }

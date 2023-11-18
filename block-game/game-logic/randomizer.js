@@ -8,9 +8,9 @@ const getRandomInt = (max) => {
 }
 
 const colorRandomizer = () => {
-    var listSize = colorsList.length
+    let listSize = colorsList.length
     
-    var randomNumber = getRandomInt(listSize)
+    let randomNumber = getRandomInt(listSize)
     
     return colorsList[randomNumber]
 }
@@ -23,15 +23,15 @@ const pieceColorSetter = (pieceShape, color) =>
     )
 
 const pieceRandomizer = () => {
-    var color = colorRandomizer();
+    let color = colorRandomizer();
 
-    var listSize = piecesList.length
+    let listSize = piecesList.length
     
-    var randomNumber = getRandomInt(listSize)
+    let randomNumber = getRandomInt(listSize)
 
-    var piece = piecesList[randomNumber]
+    let piece = piecesList[randomNumber]
 
-    var shape = piecesShapes[piece]
+    let shape = piecesShapes[piece]
 
     return pieceColorSetter(shape, color)
 }

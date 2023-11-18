@@ -30,3 +30,9 @@ export function unshiftNewRows(array, rows, size, fillWidth = 0) {
         array.unshift(newRow)
     }
 }
+
+export function iterateMatrix(matrix, callback) {
+    matrix.forEach((row, y) => {
+      row.forEach((value, x) => callback(x, y, value))
+    })
+  }
