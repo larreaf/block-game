@@ -4,6 +4,7 @@ import { BLOCK_SIZE, BOARD_WIDTH, BOARD_HEIGHT, PLAYER_START_X, PLAYER_START_Y }
 import { bindKeys } from './block-game/key_binder'
 import { game } from './block-game/game'
 import { drawBackground, drawPlayerpiece, drawSolidpieces } from './block-game/drawing/drawFunctions'
+import { ranking } from './block-game/api-request/ranking-request'
 
 const canvas = document.querySelector('canvas')
 const canvasContext = canvas.getContext('2d')
@@ -13,14 +14,21 @@ canvas.height = BLOCK_SIZE * BOARD_HEIGHT
 
 canvasContext.scale(BLOCK_SIZE, BLOCK_SIZE)
 
-let dropSpeed = 1500
+const startDropSpeed = 1000
+
+let dropSpeed = startDropSpeed
+
 const dropSpeedMinLimit = 100
 let dropCounter = 0
 let lastTime = 0
 
+game.score = 800
+
 function increaseSpeed(game){
   if(dropSpeed > dropSpeedMinLimit){
-    
+    game.level = game.score / 1000 % 10
+    dropSpeed = startDropSpeed - game.level * 100 
+    if(dropSpeed < dropSpeedMinLimit) dropSpeed = dropSpeedMinLimit
   }
 }
 
@@ -32,7 +40,7 @@ function autoDrop(game, time = 0) {
 
   lastTime = time
   dropCounter += deltaTime
-
+  console.log({dropCounter, dropSpeed}) 
   if (dropCounter > dropSpeed) {
     movement.moveDown(game)
     dropCounter = 0
@@ -53,9 +61,40 @@ function draw(canvasContext, game) {
   document.querySelector("#score").innerText = game.score
 }
 
-bindKeys()
+function startGame(game){
+  bindKeys()  
+  update(game)()  
+}
 
-update(game)()
+let name = document.querySelector("#name").value
+
+// startGame(game)
+document.querySelector("#name")
+        .addEventListener('input', (e) => {
+          name = e.target.value
+        })
+document.querySelector("#startButton")
+        .addEventListener('click', (e) => {
+          document.querySelector('#app').className = "visible"
+          document.querySelector('#menu').className = "hidden"
+          startGame(game)
+          console.log(name)
+        })
+
+const actualRanking = await ranking()
+
+const tablaRanking = document.querySelector("#ranking")
+
+actualRanking.forEach(item => {
+  const {name, score} = item;
+  const row = tablaRanking.insertRow();
+
+  const columnName = row.insertCell(0)
+  const columnScore = row.insertCell(1)
+  
+  columnName.innerText = name;
+  columnScore.innerText = score;
+})
 
 
 

@@ -1,16 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RETTIX</title>
-  </head>
-  <body>
-    <div id="app">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RETTIX</title>
+  <script type="module" src="/main.js"></script>
+</head>
+
+<body>
+  <div id="menu" class="visible">
+    <div id="inputs">
+      <label for="name">Name: </label>
+      <input id="name" name="name" type="text" />
+    </div>
+    <button id="startButton">Start game!</button>
+    <table id="ranking">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Score</th>
+        </tr>
+      </thead>      
+    </table>
+  </div>
+  <div id="app" class="hidden">
+    <div id="canvas-container">
       <canvas></canvas>
     </div>
     <span>Score: <span id="score"></span></span>
-    <script type="module" src="/main.js"></script>
-  </body>
+  </div>
+</body>
+
 </html>

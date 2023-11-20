@@ -21,7 +21,35 @@ body {
   place-content: center;
   height: 100vh;
 }
+#menu {
+  display: grid;
+  place-content: center;
+  height: 100vh;
+}
+
+#inputs {
+  grid-row: 1;
+  padding: 1px 1px;
+}
+
+#startButton {
+  grid-row: 2;
+  padding: 1px 1px;
+} 
+
+#ranking {
+  grid-row: 3;
+  padding: 1px 1px;
+}
 
 canvas {
   border: 1px solid grey;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: contents !important;
 }
