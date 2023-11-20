@@ -64,12 +64,12 @@ function startGame(game){
   update(game)()  
 }
 
-let name = document.querySelector("#name").value
+game.name = document.querySelector("#name").value
 
 // startGame(game)
 document.querySelector("#name")
         .addEventListener('input', (e) => {
-          name = e.target.value
+          game.name = e.target.value
         })
 document.querySelector("#startButton")
         .addEventListener('click', (e) => {

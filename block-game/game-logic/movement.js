@@ -36,8 +36,7 @@ const movement = {
             bf.removeRows(game)
             game.playerPiece = bf.spawnShape()
             if (collisionChecker.checkVerticalcollision(game.board, game.playerPiece)) {
-                game.board.forEach((row) => row.fill(0))
-                game.score = 0
+                bf.gameOver(game)
             }
         }
     },

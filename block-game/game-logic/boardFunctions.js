@@ -5,6 +5,7 @@ import {
   removeItemsAt,
   unshiftNewRows,
 } from "./arrayFunctions";
+import { postNewGame } from "../api-request/ranking-request";
 
 const boardFunctions = {
   spawnShape: () => ({
@@ -36,6 +37,11 @@ const boardFunctions = {
 
     game.score += 150 * rowsIndexes.length;
   },
+  gameOver: (game) => {
+    postNewGame(game.name, game.score);
+    game.board.forEach((row) => row.fill(0))
+    game.score = 0
+  }
 };
 
 export default boardFunctions;
