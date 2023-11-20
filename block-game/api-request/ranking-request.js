@@ -1,9 +1,20 @@
-export const ranking = async () => {
-    const url = 'https://block-game-api.vercel.app/api/ranking'
+const url = 'https://block-game-api.vercel.app/api/ranking'
 
+const url_dev = 'http://localhost:3000/api/ranking'
+
+export const ranking = async () => {
     const response = await fetch(url, {
         method: 'GET',
     })
-    console.log({response})
+
+    return await response.json()
+}
+
+export const postNewGame = async (name, score) => {
+    const response = await fetch(url, {
+        method: 'POST',
+        body: { name: name, score: score }
+    })
+
     return await response.json()
 }

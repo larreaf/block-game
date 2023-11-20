@@ -22,8 +22,6 @@ const dropSpeedMinLimit = 100
 let dropCounter = 0
 let lastTime = 0
 
-game.score = 800
-
 function increaseSpeed(game){
   if(dropSpeed > dropSpeedMinLimit){
     game.level = game.score / 1000 % 10
@@ -40,7 +38,7 @@ function autoDrop(game, time = 0) {
 
   lastTime = time
   dropCounter += deltaTime
-  console.log({dropCounter, dropSpeed}) 
+
   if (dropCounter > dropSpeed) {
     movement.moveDown(game)
     dropCounter = 0
@@ -78,7 +76,6 @@ document.querySelector("#startButton")
           document.querySelector('#app').className = "visible"
           document.querySelector('#menu').className = "hidden"
           startGame(game)
-          console.log(name)
         })
 
 const requestRanking = async () => {
@@ -86,13 +83,15 @@ const requestRanking = async () => {
   
   const tablaRanking = document.querySelector("#ranking")
   
-  actualRanking.forEach(item => {
+  actualRanking.forEach((item, index) => {
     const {name, score} = item;
     const row = tablaRanking.insertRow();
   
-    const columnName = row.insertCell(0)
-    const columnScore = row.insertCell(1)
+    const columnPosition = row.insertCell(1)
+    const columnName = row.insertCell(1)
+    const columnScore = row.insertCell(2)
     
+    columnPosition.innerText = index;
     columnName.innerText = name;
     columnScore.innerText = score;
   })
