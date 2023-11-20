@@ -87,11 +87,11 @@ const requestRanking = async () => {
     const {name, score} = item;
     const row = tablaRanking.insertRow();
   
-    const columnPosition = row.insertCell(1)
+    const columnPosition = row.insertCell(0)
     const columnName = row.insertCell(1)
     const columnScore = row.insertCell(2)
     
-    columnPosition.innerText = index;
+    columnPosition.innerText = index + 1;
     columnName.innerText = name;
     columnScore.innerText = score;
   })
