@@ -1,6 +1,6 @@
 import './style.css'
 import movement from './block-game/game-logic/movement'
-import { BLOCK_SIZE, BOARD_WIDTH, BOARD_HEIGHT, GAME_START_DROP_SPEED, GAME_LIMIT_MIN_DROP_SPEED } from './block-game/constants/gameConstants'
+import { BLOCK_SIZE, BOARD_WIDTH, BOARD_HEIGHT, GAME_START_DROP_SPEED, GAME_LIMIT_MIN_DROP_SPEED, GAME_LEVEL_MAX, GAME_INCREASE_SPEED_BY_LEVEL } from './block-game/constants/gameConstants'
 import { bindKeys } from './block-game/key_binder'
 import { game } from './block-game/game'
 import { drawBackground, drawPlayerpiece, drawSolidpieces } from './block-game/drawing/drawFunctions'
@@ -22,12 +22,16 @@ let lastTime = 0
 function increaseSpeed(game){
 
   if(game.dropSpeed > GAME_LIMIT_MIN_DROP_SPEED){    
-    game.level = Math.floor(game.score / 1000 % 10) + 1
-    game.dropSpeed = GAME_START_DROP_SPEED - game.level * 100 
+    game.level = Math.floor(game.score / GAME_START_DROP_SPEED % GAME_LEVEL_MAX) + 1
 
-    if(game.dropSpeed < GAME_LIMIT_MIN_DROP_SPEED) 
-      game.dropSpeed = GAME_LIMIT_MIN_DROP_SPEED
+    // if(game.score > GAME_START_DROP_SPEED * GAME_LEVEL_MAX) game.level = GAME_LEVEL_MAX
+
+    game.dropSpeed = GAME_START_DROP_SPEED - game.level * GAME_INCREASE_SPEED_BY_LEVEL
+
+    return;
   }
+  
+  game.dropSpeed = GAME_LIMIT_MIN_DROP_SPEED
 
 }
 
