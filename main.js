@@ -24,7 +24,7 @@ let lastTime = 0
 
 function increaseSpeed(game){
   if(dropSpeed > dropSpeedMinLimit){
-    game.level = game.score / 1000 % 10
+    game.level = Math.floor(game.score / 1000 % 10) + 1
     dropSpeed = startDropSpeed - game.level * 100 
     if(dropSpeed < dropSpeedMinLimit) dropSpeed = dropSpeedMinLimit
   }
@@ -57,6 +57,7 @@ function draw(canvasContext, game) {
   drawSolidpieces(canvasContext, game.board)
   drawPlayerpiece(canvasContext, game.playerPiece)
   document.querySelector("#score").innerText = game.score
+  document.querySelector("#level").innerText = game.level
 }
 
 function startGame(game){

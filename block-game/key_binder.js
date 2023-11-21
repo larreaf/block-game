@@ -8,7 +8,7 @@ export const bindKeys = () => {
         if (event.key === KEY_MOVE_LEFT) movement.moveLeft(game)
         if (event.key === KEY_MOVE_RIGHT) movement.moveRight(game)
         if (event.key === KEY_MOVE_DOWN) {
-            game.score++
+            game.score += game.level
             movement.moveDown(game)
         }
         if (event.key === KEY_ROTATE) movement.rotate(game)

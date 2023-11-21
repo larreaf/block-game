@@ -6,5 +6,6 @@ export const game = {
     board: create2DArray(BOARD_HEIGHT, BOARD_WIDTH),
     playerPiece: bf.spawnShape(),
     score: 0,
+    level: 1,
     name: ""
 }

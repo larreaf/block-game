@@ -35,12 +35,13 @@ const boardFunctions = {
 
     unshiftNewRows(game.board, rowsIndexes.length, BOARD_WIDTH);
 
-    game.score += 150 * rowsIndexes.length;
+    game.score += (150 * rowsIndexes.length * game.level);
   },
   gameOver: (game) => {
     postNewGame(game.name, game.score);
     game.board.forEach((row) => row.fill(0))
     game.score = 0
+    game.level = 1
   }
 };
 

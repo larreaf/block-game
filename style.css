@@ -47,6 +47,11 @@ canvas {
   border: 1px solid grey;
 }
 
+#gameInfo {
+  display: flex;
+  justify-content: space-between;
+} 
+
 .hidden {
   display: none !important;
 }
