@@ -1,5 +1,5 @@
 import movement from "./game-logic/movement"
-import { game } from "./game"
+// import { game } from "./game"
 import { BLOCK_SIZE } from "./constants/gameConstants"
 
 const horizontalTouchThreshold = BLOCK_SIZE
@@ -7,18 +7,18 @@ const verticalTouchThreshold = BLOCK_SIZE/2
 
 let touchStartX, touchStartY
 
-export const clickEventHandler = (e) => {
+export const clickEventHandler = (game) => (e) => {
     e.preventDefault();
     movement.rotate(game)
   }
 
-export const touchstartEventHandler = (e) => {
+export const touchstartEventHandler = (game) => (e) => {
     e.preventDefault();
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
 }
 
-export const touchmoveEventHandler = (e) => {
+export const touchmoveEventHandler = (game) => (e) => {
     e.preventDefault();
     const touchEndX = e.touches[0].clientX;
     const touchEndY = e.touches[0].clientY;

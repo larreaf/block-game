@@ -10,7 +10,9 @@ export const ranking = async () => {
     return await response.json()
 }
 
-export const postNewGame = async (name, score) => {
+export const postNewGame = async (name, score) => {    
+    if(score < 300) return;
+
     const response = await fetch(url, {
         method: 'POST',
         body: JSON.stringify({ name: name, score: score })

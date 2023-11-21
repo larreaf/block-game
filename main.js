@@ -1,10 +1,11 @@
 import './style.css'
 import movement from './block-game/game-logic/movement'
-import { BLOCK_SIZE, BOARD_WIDTH, BOARD_HEIGHT, PLAYER_START_X, PLAYER_START_Y } from './block-game/constants/gameConstants'
+import { BLOCK_SIZE, BOARD_WIDTH, BOARD_HEIGHT, GAME_START_DROP_SPEED, GAME_LIMIT_MIN_DROP_SPEED } from './block-game/constants/gameConstants'
 import { bindKeys } from './block-game/key_binder'
 import { game } from './block-game/game'
 import { drawBackground, drawPlayerpiece, drawSolidpieces } from './block-game/drawing/drawFunctions'
 import { ranking } from './block-game/api-request/ranking-request'
+import bf from './block-game/game-logic/boardFunctions'
 
 const canvas = document.querySelector('canvas')
 const canvasContext = canvas.getContext('2d')
@@ -14,20 +15,20 @@ canvas.height = BLOCK_SIZE * BOARD_HEIGHT
 
 canvasContext.scale(BLOCK_SIZE, BLOCK_SIZE)
 
-const startDropSpeed = 1000
 
-let dropSpeed = startDropSpeed
-
-const dropSpeedMinLimit = 100
 let dropCounter = 0
 let lastTime = 0
 
 function increaseSpeed(game){
-  if(dropSpeed > dropSpeedMinLimit){
+
+  if(game.dropSpeed > GAME_LIMIT_MIN_DROP_SPEED){    
     game.level = Math.floor(game.score / 1000 % 10) + 1
-    dropSpeed = startDropSpeed - game.level * 100 
-    if(dropSpeed < dropSpeedMinLimit) dropSpeed = dropSpeedMinLimit
+    game.dropSpeed = GAME_START_DROP_SPEED - game.level * 100 
+
+    if(game.dropSpeed < GAME_LIMIT_MIN_DROP_SPEED) 
+      game.dropSpeed = GAME_LIMIT_MIN_DROP_SPEED
   }
+
 }
 
 function autoDrop(game, time = 0) {
@@ -39,7 +40,7 @@ function autoDrop(game, time = 0) {
   lastTime = time
   dropCounter += deltaTime
 
-  if (dropCounter > dropSpeed) {
+  if (dropCounter > game.dropSpeed) {
     movement.moveDown(game)
     dropCounter = 0
   }
@@ -49,7 +50,7 @@ function autoDrop(game, time = 0) {
 const update = (game) => (time = 0) => {
   autoDrop(game, time)
   draw(canvasContext, game)
-  window.requestAnimationFrame(update(game))
+  game.token = window.requestAnimationFrame(update(game))
 }
 
 function draw(canvasContext, game) {
@@ -61,7 +62,8 @@ function draw(canvasContext, game) {
 }
 
 function startGame(game){
-  bindKeys()  
+  game.playerPiece = bf.spawnShape()
+  bindKeys(game)
   update(game)()  
 }
 

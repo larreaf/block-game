@@ -1,11 +1,12 @@
 import pieceRandomizer from "./randomizer";
-import { PLAYER_START_X, PLAYER_START_Y, BOARD_WIDTH } from "../constants/gameConstants";
+import { PLAYER_START_X, PLAYER_START_Y, BOARD_WIDTH, GAME_START_DROP_SPEED } from "../constants/gameConstants";
 import {
   findallIndexes,
   removeItemsAt,
   unshiftNewRows,
 } from "./arrayFunctions";
 import { postNewGame } from "../api-request/ranking-request";
+import { unbindKeys } from "../key_binder";
 
 const boardFunctions = {
   spawnShape: () => ({
@@ -38,10 +39,15 @@ const boardFunctions = {
     game.score += (150 * rowsIndexes.length * game.level);
   },
   gameOver: (game) => {
+    unbindKeys(game);
     postNewGame(game.name, game.score);
     game.board.forEach((row) => row.fill(0))
+    document.querySelector('#app').className = "hidden"
+    document.querySelector('#menu').className = "visible"
+    window.cancelAnimationFrame(game.token)
     game.score = 0
     game.level = 1
+    game.dropSpeed = GAME_START_DROP_SPEED
   }
 };
 
