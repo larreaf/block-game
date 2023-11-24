@@ -88,19 +88,23 @@ document.querySelector("#startButton")
 const requestRanking = async () => {
   const actualRanking = await ranking()
   
-  const tablaRanking = document.querySelector("#ranking")
+  const tablaRanking = document.querySelector("tbody")
   
   actualRanking.forEach((item, index) => {
     const {name, score} = item;
-    const row = tablaRanking.insertRow();
-  
-    const columnPosition = row.insertCell(0)
-    const columnName = row.insertCell(1)
-    const columnScore = row.insertCell(2)
+    const row = tablaRanking.rows[index];
+    console.log(row);
+    row.cells[1].innerText = name;
+    row.cells[2].innerText = score;
+   
+    row.classList.remove("loading");
+    // const columnPosition = row.insertCell(0)
+    // const columnName = row.insertCell(1)
+    // const columnScore = row.insertCell(2)
     
-    columnPosition.innerText = index + 1;
-    columnName.innerText = name;
-    columnScore.innerText = score;
+    // columnPosition.innerText = index + 1;
+    // columnName.innerText = name;
+    // columnScore.innerText = score;
   })
 }
 
